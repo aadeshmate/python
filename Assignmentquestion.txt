@@ -1,0 +1,16 @@
+
+
+Objective: Extend the concepts from StatefulAIAssistant by adding sliding window memory management (to prevent context overflow) and JSON session export/import features.
+Assignment Requirements
+Class Architecture (BoundedMemoryAssistant):
+Create a class that initializes an Ollama Client and sets up self.history with a default system prompt.
+Add a parameter max_turns: int = 5 (which represents the maximum number of user-assistant conversation pairs allowed in memory at any time).
+Sliding Window Memory Management (_prune_memory()):
+Implement a private method _prune_memory() that executes before sending messages to the LLM.
+Rule: Always keep self.history[0] (the system prompt). If the number of chat entries (excluding the system prompt) exceeds 2 * max_turns (since 1 turn = 1 user message + 1 assistant message), remove the oldest user-assistant pair (self.history[1] and self.history[2]).
+Session Persistence:
+export_session(filepath: str): Saves self.history to a JSON file on disk.
+import_session(filepath: str): Loads self.history from a JSON file, restoring past conversation state.e
+Streaming & Error Handling:
+Implement chat_stream(user_input: str) to stream responses token-by-token using print(..., flush=True).
+Include try...except blocks with rollback logic (self.history.pop()) if the API call fails.
